@@ -1,0 +1,42 @@
+#!/usr/bin/env node
+
+var app = require('../app');
+var args = process.argv.slice(2);
+var host = '127.0.0.1';
+var port = 3001;
+var usage = false;
+
+args.forEach(function (arg, i) {
+
+  var parts, opt, val;
+
+  if (arg.indexOf('--') === 0) {
+
+    parts = arg.split('=');
+    opt = parts[0];
+
+    if (opt === '--port' || opt === '-p') {
+      port = parts[1];
+    } else {
+      usage = true;
+    }
+
+  } else {
+
+    if (arg.indexOf('http') === 0) {
+      redirect = arg;
+    } else {
+      usage = true;
+    }
+
+  }
+
+ });
+
+if (!usage) {
+  return app.init(host, port, redirect);
+} else {
+  console.log('Usage: fakebook [options] <redirect-url>\nOptions:');
+  console.log('\t-p, --port=<port>  specify the port [3001]');
+  return  1;
+}

@@ -1,10 +1,24 @@
 {
+  "author": "August Hovland <gushov@gmail.com>",
+  "description": "fake facebook login for your dev environment",
   "name": "fakebook",
   "version": "0.0.1",
-  "private": true,
+   "repository": {
+    "type": "git",
+    "url": "git://github.com/gushov/fakebook.git"
+  },
+  "engines": {
+    "node": ">= 0.8.x"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "grunt": ">= 0.3.x",
+    "buster": ">= 0.6.x",
+    "grunt-buster": ">= 0.1.x"
+  },
+  "licenses": [{ "type": "MIT" }], 
+  "main": "app.js",
   "scripts": {
     "start": "node app"
-  },
-  "dependencies": {
   }
 }

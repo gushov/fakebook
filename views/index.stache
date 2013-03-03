@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>fakebook</title>
+<link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
+</head>
+
+<body class="config">
+  <header>
+    <h1>fakebook</h1>
+  </header>
+  <article>
+    <form action="/config" method="post">
+    <ul>
+      {{#users}}
+      <li>
+        <input type="radio" name="user" value="{{id}}">
+        <label>id</label>
+        <input type="text" name="id" value="{{id}}">
+        <label>name</label>
+        <input type="text" name="name" value="{{name}}">
+        <label>email</label>
+        <input type="text" name="email" value="{{email}}">
+        <label>locale</label>
+        <input type="text" name="locale" value="{{locale}}">
+        {{#location}}
+        <fieldset>
+          <legend>location</legend>
+          <label>id</label>
+          <input type="text" name="location[id]" value="{{id}}">
+          <label>name</label>
+          <input type="text" name="location[name]" value="{{name}}">
+        </fieldset>
+        {{/location}}
+        {{#picture}}
+        <fieldset>
+          <legend>picture</legend>  
+          <label>data.url</label>
+          <input type="text" name="picture[data][url]" value="{{data.url}}">
+          <label>data.is_silhouette</label>
+          <input type="text" name="location[name]" value="{{data.is_silhouette}}"> 
+        </fieldset>
+        {{/picture}}
+      </li>
+      {{/users}}
+      <input type="submit" value="login">
+    </ul>
+    </form>
+  </article>
+</body>
+
+</html>
