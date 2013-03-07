@@ -94,7 +94,7 @@ li input {
   display: inline-block;
 }
 
-li input[type="radio"] {
+li input[type="submit"] {
   position: absolute;
 }
 
@@ -112,4 +112,9 @@ li fieldset {
   width: 85%;
   padding-left: 8%;
   border: 1px solid #eee;
+}
+
+li fieldset legend {
+  text-align: right;
+  padding-right: 92%;
 }

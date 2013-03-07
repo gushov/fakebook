@@ -8,7 +8,7 @@ npm install -g fakebook
 
 ## Usage
 
-fakebook [options] <redirect-url>
+fakebook [options]
 
 ## Option
 

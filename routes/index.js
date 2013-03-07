@@ -2,12 +2,48 @@
   newcap:true, noarg:true, sub:true, undef:true, boss:true,
   strict:false, eqnull:true, node:true */
 
+var url = require('url');
 var qs = require('querystring');
 var fs = require('fs');
 var util = require('../lib/util');
+var store = require('../lib/store');
+
+exports.config = function (req, res) {
+
+  var body = '';
+
+  req.on('data', function (data) {
+    body += data;
+  });
+
+  req.on('end', function () {
+
+    var form = qs.parse(body);
+    var user = util.formParser(form);
+    var code = store.id();
+    var querystring = qs.stringify({
+      code: code,
+      state: user.state
+    });
+
+    store.save(code, user, function (err) {
+
+      res.writeHead(302, {
+        'Location': user.redirect_uri + '?' + querystring
+      });
+
+      res.end();
+
+    });
+
+  });
+
+};
 
 exports.dialog = function (req, res) {
 
+  var query = url.parse(req.url).query;
+  var queryObj = qs.parse(query);
   var templatePath = __dirname + '/../views/index.stache';
   var configPath = __dirname + '/../config.json';
 
@@ -17,7 +53,10 @@ exports.dialog = function (req, res) {
   ], function (err, results) {
 
     var buf = results[0];
-    var users = JSON.parse(results[1]);
+    var users = JSON.parse(results[1]).map(function (user) {
+      user.query = queryObj;
+      return user;
+    });
     var parsed = util.stache({ users: users }, buf);
 
     res.writeHead(200, {
@@ -31,31 +70,38 @@ exports.dialog = function (req, res) {
 
 };
 
-exports.oauth = function (req, res) {
-  res.redirect('http://local.littlebrewery.com:3000/oauth?code=1122eeff&state=' + req.query.state);
-};
-
 exports.token = function (req, res) {
-  res.send(qs.stringify({ access_token: '3wewe33ee' }));
+
+  var query = url.parse(req.url).query;
+  var queryObj = qs.parse(query);
+
+  var body = qs.stringify({ access_token: queryObj.code });
+
+  res.writeHead(200, {
+    'Content-Type': 'application/json',
+    'Content-Length': body.length
+  });
+
+  res.end(body);
+
 };
 
 exports.me = function (req, res) {
 
-  var fbUser = {
-    id: "520851908",
-    locale: "en_US",
-    location: {
-      name: "Berlin, Germany"
-    },
-    picture: {
-      data: {
-        url: "http://profile.ak.fbcdn.net/hprofile-ak-prn1/49064_520851908_4974_q.jpg"
-      }
-    },
-    name: "Gus Hovland",
-    email: "gushov@gmail.com"
-  };
+  var query = url.parse(req.url).query;
+  var queryObj = qs.parse(query);
 
-  res.send(JSON.stringify(fbUser));
+  store.fetch(queryObj.access_token, function (err, user) {
+
+    var body = JSON.stringify(user);
+
+    res.writeHead(200, {
+      'Content-Type': 'application/json',
+      'Content-Length': body.length
+    });
+
+    res.end(body);
+
+  });
 
 };
