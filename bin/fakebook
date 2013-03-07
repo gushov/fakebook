@@ -21,22 +21,14 @@ args.forEach(function (arg, i) {
       usage = true;
     }
 
-  } else {
-
-    if (arg.indexOf('http') === 0) {
-      redirect = arg;
-    } else {
-      usage = true;
-    }
-
   }
 
  });
 
 if (!usage) {
-  return app.init(host, port, redirect);
+  return app.init(host, port);
 } else {
-  console.log('Usage: fakebook [options] <redirect-url>\nOptions:');
+  console.log('Usage: fakebook [options] \nOptions:');
   console.log('\t-p, --port=<port>  specify the port [3001]');
   return  1;
 }

@@ -9,7 +9,7 @@ var config = require('./lib/config');
 var router = require('./lib/router');
 var routes = require('./routes');
 
-exports.init = function (host, port, redirect) {
+exports.init = function (host, port) {
 
   fetcher.on(fetcher.ev.RECEIVE_FB_DATA, function (data) {
     config.emit(config.ev.SAVE_CONFIG, data);
@@ -20,11 +20,12 @@ exports.init = function (host, port, redirect) {
   });
 
   config.on(config.ev.FOUND_CONFIG, function (conf) {
-    
+
     var server = http.createServer(router
       .get('/dialog/oauth', routes.dialog)
       .get('/oauth/access_token', routes.token)
       .get('/me', routes.me)
+      .post('/config', routes.config)
       .middleware());
 
     server.listen(port, host, function () {
