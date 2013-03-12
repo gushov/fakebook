@@ -16,7 +16,7 @@ fakebook saves your authenticated test users locally and servers them up via a l
 
 ## Usage
 
-    $ bin/fakebook [option]
+    $ node_moduels/.bin/fakebook [option]
 
 ## Option
 

@@ -2,7 +2,7 @@
   "author": "August Hovland <gushov@gmail.com>",
   "description": "fake facebook login for your dev environment",
   "name": "fakebook",
-  "version": "0.0.2",
+  "version": "0.0.3",
    "repository": {
     "type": "git",
     "url": "git://github.com/gushov/fakebook.git"
@@ -10,6 +10,7 @@
   "engines": {
     "node": ">= 0.8.x"
   },
+  "bin": "bin/fakebook",
   "dependencies": {},
   "devDependencies": {
     "grunt": ">= 0.3.x",
