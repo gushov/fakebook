@@ -6,7 +6,7 @@ var url = require('url');
 var qs = require('querystring');
 var fs = require('fs');
 var util = require('../lib/util');
-var store = require('../lib/store');
+var store = require('../lib/store').init();
 
 exports.config = function (req, res) {
 

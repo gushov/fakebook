@@ -3,13 +3,34 @@
   strict:false, eqnull:true, node:true */
 
 var http = require('http');
-var prompt = require('./lib/prompt');
-var fetcher = require('./lib/fetcher');
-var config = require('./lib/config');
-var router = require('./lib/router');
+var https = require('https');
+var fs = require('fs');
+var readline = require('readline');
+
+var Config = require('./lib/config');
+var Fetcher = require('./lib/fetcher');
+var Logger = require('./lib/logger');
+var Prompt = require('./lib/prompt');
+var Router = require('./lib/router');
 var routes = require('./routes');
 
+/**
+ * Init fakebook server
+ * @param {String} host Hostname to run server on
+ * @param {Number} port Port number to run server on
+ */
 exports.init = function (host, port) {
+
+  var rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+  });
+
+  var logger = Logger.init(console);
+  var config = Config.init(fs, logger);
+  var fetcher = Fetcher.init(https, logger);
+  var prompt = Prompt.init(rl);
+  var router = Router.init(fs, logger);
 
   fetcher.on(fetcher.ev.RECEIVE_FB_DATA, function (data) {
     config.emit(config.ev.SAVE_CONFIG, data);
@@ -29,7 +50,7 @@ exports.init = function (host, port) {
       .middleware());
 
     server.listen(port, host, function () {
-      console.log('-fakebook up on ' + host + ':' + port);
+      logger.info('-fakebook up on ' + host + ':' + port);
     });
 
   });

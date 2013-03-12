@@ -6,8 +6,52 @@
 var buster = require('buster');
 var util = require('../lib/util');
 
-
 buster.testCase("util", {
+
+  "should call functions in a series": function (done) {
+
+    var brushTeeth = this.stub().callsArgWith(0, null, 'teeth');
+    var washFace = this.stub().callsArgWith(0, null, 'face');
+    var goToBed = this.stub().callsArgWith(0, null, 'bed');
+
+    util.next([
+      brushTeeth,
+      washFace,
+      goToBed
+    ], function (err, results) {
+      assert.equals(results, ['teeth', 'face', 'bed']);
+      done();
+    });
+
+  },
+
+  "should return proper content type": function () {
+
+    assert.equals(util.contentType('/styles/main.css'), 'text/css');
+    assert.equals(util.contentType('http://jojo.com/img/zoe.jpg'), 'image/jpeg');
+    assert.equals(util.contentType('/users/lena.txt'), 'text/plain');
+
+  },
+
+  "should parse form data to object": function () {
+
+    var form = {
+      'name': 'tree',
+      'age': 40,
+      'son.name': 'apple',
+      'son.age': 0
+    };
+
+    assert.equals(util.formParser(form), {
+      name: 'tree',
+      age: 40,
+      son: {
+        name: 'apple',
+        age: 0
+      }
+    });
+
+  },
 
   "should parse stach template": function () {
 
