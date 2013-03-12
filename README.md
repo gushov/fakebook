@@ -1,19 +1,27 @@
 # fakebook
 
-fake facebook login
+**fake facebook login:**
+fakebook saves your authenticated test users locally and servers them up via a little node app.
+
+
+## Prerequisites
+
+  * facebook app ID
+  * facebook app token
+  * At least one authenticated facebook test user
 
 ## Install
 
-npm install -g fakebook
+    $ npm install fakebook
 
 ## Usage
 
-fakebook [options]
+    $ bin/fakebook [option]
 
 ## Option
 
--p, --port=<port>  specify the port [3001]
+    -p, --port=[port]     specify the port (default 3001)
 
 ## License
-Copyright (c) 2012 August Hovland
+Copyright (c) 2013 August Hovland
 Licensed under the MIT license.
