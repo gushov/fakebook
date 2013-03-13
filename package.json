@@ -2,7 +2,7 @@
   "author": "August Hovland <gushov@gmail.com>",
   "description": "fake facebook login for your dev environment",
   "name": "fakebook",
-  "version": "0.0.4",
+  "version": "0.0.5",
    "repository": {
     "type": "git",
     "url": "git://github.com/gushov/fakebook.git"
