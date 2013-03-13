@@ -7,7 +7,7 @@ var https = require('https');
 var fs = require('fs');
 var readline = require('readline');
 
-var Config = require('./lib/config');
+var Users = require('./lib/users');
 var Fetcher = require('./lib/fetcher');
 var Logger = require('./lib/logger');
 var Prompt = require('./lib/prompt');
@@ -27,26 +27,26 @@ exports.init = function (host, port) {
   });
 
   var logger = Logger.init(console);
-  var config = Config.init(fs, logger);
+  var users = Users.init(fs, logger);
   var fetcher = Fetcher.init(https, logger);
   var prompt = Prompt.init(rl);
   var router = Router.init(fs, logger);
 
   fetcher.on(fetcher.ev.RECEIVE_FB_DATA, function (data) {
-    config.emit(config.ev.SAVE_CONFIG, data);
+    users.emit(users.ev.SAVE_USERS, data);
   });
 
   prompt.on(prompt.ev.RECEIVE_APP_DATA, function (data) {
     fetcher.emit(fetcher.ev.REQUEST_FB_DATA, data);
   });
 
-  config.on(config.ev.FOUND_CONFIG, function (conf) {
+  users.on(users.ev.FOUND_USERS, function (conf) {
 
     var server = http.createServer(router
       .get('/dialog/oauth', routes.dialog)
       .get('/oauth/access_token', routes.token)
       .get('/me', routes.me)
-      .post('/config', routes.config)
+      .post('/user', routes.user)
       .middleware());
 
     server.listen(port, host, function () {
@@ -55,10 +55,10 @@ exports.init = function (host, port) {
 
   });
 
-  config.on(config.ev.MISSING_CONFIG, function () {
+  users.on(users.ev.MISSING_USERS, function () {
     prompt.emit(prompt.ev.REQUEST_APP_DATA);
   });
 
-  config.emit(config.ev.LOAD_CONFIG);
+  users.emit(users.ev.LOAD_USERS);
 
 };

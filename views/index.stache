@@ -5,7 +5,7 @@
 <link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
 </head>
 
-<body class="config">
+<body class="users">
   <header>
     <h1>fakebook</h1>
   </header>
@@ -13,7 +13,7 @@
     <ul>
       {{#users}}
       <li>
-        <form action="/config" method="post">
+        <form action="/user" method="post">
           <input type="submit" value="login">
           {{#query}}
           <input type="hidden" name="client_id" value="{{client_id}}">

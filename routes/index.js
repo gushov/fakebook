@@ -8,7 +8,7 @@ var fs = require('fs');
 var util = require('../lib/util');
 var store = require('../lib/store').init();
 
-exports.config = function (req, res) {
+exports.user = function (req, res) {
 
   var body = '';
 
@@ -45,11 +45,11 @@ exports.dialog = function (req, res) {
   var query = url.parse(req.url).query;
   var queryObj = qs.parse(query);
   var templatePath = __dirname + '/../views/index.stache';
-  var configPath = __dirname + '/../config.json';
+  var usersPath = __dirname + '/../users.json';
 
   util.next([
     fs.readFile.bind(fs, templatePath, 'utf8'),
-    fs.readFile.bind(fs, configPath, 'utf8')
+    fs.readFile.bind(fs, usersPath, 'utf8')
   ], function (err, results) {
 
     var buf = results[0];
