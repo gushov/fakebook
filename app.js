@@ -12,7 +12,8 @@ var Fetcher = require('./lib/fetcher');
 var Logger = require('./lib/logger');
 var Prompt = require('./lib/prompt');
 var Router = require('./lib/router');
-var routes = require('./routes');
+var Store = require('./lib/store');
+var Routes = require('./lib/routes');
 
 /**
  * Init fakebook server
@@ -31,6 +32,8 @@ exports.init = function (host, port) {
   var fetcher = Fetcher.init(https, logger);
   var prompt = Prompt.init(rl);
   var router = Router.init(fs, logger);
+  var store = Store.init();
+  var routes = Routes.init(fs, store);
 
   fetcher.on(fetcher.ev.RECEIVE_FB_DATA, function (data) {
     users.emit(users.ev.SAVE_USERS, data);
